@@ -1,4 +1,3 @@
-
 #ifndef CHAIN_HPP
 #define CHAIN_HPP
 
