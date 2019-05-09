@@ -13,15 +13,7 @@ template <typename T1, typename T2> class chain {
         public:
         chain(const T1& r1,const T2& r2) : a(r1), b(r2) {}
 
-       struct iterator { 
-          private:
-        decltype(a.begin()) t1_begin;
-        decltype(a.end()) t1_end;
-
-        decltype(b.begin()) t2_begin;
-        decltype(b.end()) t2_end;
-        
-               
+       struct iterator {        
         iterator(T1& a, T2& b) 
         : t1_begin(a.begin()), t1_end(a.end()),
           t2_begin(b.begin()), t2_end(b.end()) {} 
@@ -48,7 +40,12 @@ template <typename T1, typename T2> class chain {
             // t1_begin == iter.t1_begin && t2_begin == iter.t2_begin
         }
        
-       
+        private:
+        decltype(a.begin()) t1_begin;
+        decltype(a.end()) t1_end;
+
+        decltype(b.begin()) t2_begin;
+        decltype(b.end()) t2_end;
        
      }; // End Struct Iterator
         
