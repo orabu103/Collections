@@ -29,6 +29,7 @@ namespace itertools{
             : t1_begin(_TypeA.end()), t1_end(_TypeA.end()),
             t2_begin(_TypeB.end()), t2_end(_TypeB.end()) {} 
             
+            private:
             iterator& operator++(){
                 if(t1_begin != t1_end) ++ t1_begin;
                 else ++ t2_begin;
