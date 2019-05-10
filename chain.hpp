@@ -13,13 +13,14 @@ namespace itertools{
         chain(const T& TypeA,const U& TypeB): _TypeA(TypeA), _TypeB(TypeB) {}
         
         struct iterator {
-            public:
+            
             decltype(_TypeA.begin()) t1_begin;
             decltype(_TypeA.end()) t1_end;
 
             decltype(_TypeB.begin()) t2_begin;
             decltype(_TypeB.end()) t2_end;
-
+            
+            public:
             iterator(T& _TypeA, U& _TypeB) 
             : t1_begin(_TypeA.begin()), t1_end(_TypeA.end()),
             t2_begin(_TypeB.begin()), t2_end(_TypeB.end()) {} 
