@@ -44,6 +44,7 @@ namespace itertools{
                 else return false;
             }
         };
+        private:
         iterator begin() { return iterator(_TypeA,_TypeB); }
         iterator end() { return iterator(_TypeA,_TypeB,false); }
     };
