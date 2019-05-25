@@ -1,10 +1,10 @@
-
 #ifndef POWERSET_HPP
 #define POWERSET_HPP
 
 #include <iostream>
 #include <vector> 
 #include <cmath>
+#include <sstream>
 
 namespace itertools {
 template <typename T> class powerset {
@@ -15,52 +15,64 @@ template <typename T> class powerset {
         public:        
         powerset(const T& _object) :_object(_object) {} 
         
-    struct iterator {
-        iterator(T& _object,int n, int N) : it_begin(_object.begin()), n(n), N(N) {}
-        iterator& operator++(){  ++N; return *this; } 
-        std::string operator*() { 
-        std::string ans;
-        ans += "{";
-        for(int j=0; j<n; j++)
-        {
-            if( N & (1<<j)) {
-                decltype(*(_object.begin())) at_j = At(j);
-                if((at_j >= 'a' && at_j <= 'z') ||( at_j >= 'A' && at_j <='Z'))
-                    ans += at_j;
-                else 
-                    ans += std::to_string(at_j);
-                ans += ",";
-            }
-        }
-        ans = ans.substr(0,ans.find_last_of(","));
-        ans += "}";
-        return ans;
-        } 
-        
-        bool operator!=(const iterator& iter) { return N != iter.N; }
-        
+    struct const_iterator {
         private:
-        decltype(_object.begin()) it_begin;
-        int n; // Size of the total _ _ _ _ 
-        int N; // pow of n
+            typename T::const_iterator it_begin;
+            int n; // Size of the total _ _ _ _ 
+            int N; // pow of n
 
-       decltype(*(_object.begin())) At(int j) {
-        decltype(_object.begin()) temp = it_begin;
+            auto At(int j) const {
+            auto temp = it_begin;
             for(int i=0; i<j; i++)
-             ++temp;
-             return *temp;
-        }
+                ++temp;
+            return *temp;
+            }
 
+            // template <typename H>
+            // void add_to_string(stringstream& ans, H var ) const {
+                
+            //     ans<<var;
+            //     //ans += std::to_string(var);
+            // }
+            // void add_to_string(stringstream& ans, char var ) const {
+            //     ans += var;
+            // } 
+        public: 
+            const_iterator(typename T::const_iterator it_begin,int n, int N) : it_begin(it_begin), n(n), N(N) {}
+            const_iterator& operator++(){  ++N; return *this; }       
+            
+            std::string operator*() const { 
+            std::ostringstream ans;
+            ans << '{';
+            for(int j=0; j<n; j++)
+            {
+                if( N & (1<<j)) {
+                    auto at_j = At(j);
+                    //add_to_string(ans,at_j);
+                    ans<<at_j;
+                    ans << ',';
+                }
+            }
+            std::string solution = ans.str();
+            solution = solution.substr(0,solution.find_last_of(","));
+            solution += "}";
+            return solution;
+            } 
 
-     }; // End Struct Iterator
+            bool operator!=(const const_iterator& iter) const { return N != iter.N; }
+            
+
+     }; // End Struct const_iterator
         
-        iterator begin() { return iterator(_object,findSize(),0); }
-        iterator end() { return iterator(_object,findSize(),pow(2,findSize())); }
-       
-        int findSize() {
+        const_iterator begin() const {
+            int counter = 0;
+            for(auto p : _object) counter++;      
+             return const_iterator(_object.begin(),counter,0); 
+        }
+        const_iterator end() const { 
             int counter = 0;
             for(auto p : _object) counter++;
-            return counter;
+            return const_iterator(_object.begin(),counter,pow(2,counter));
         }
     };
 } // End Namespace 'itertools'
